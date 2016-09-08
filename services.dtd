@@ -1,0 +1,72 @@
+<!ELEMENT serviceconfiguration (servicecontainer|enum|structure)*>
+
+<!ELEMENT servicecontainer (service)*>
+<!ATTLIST servicecontainer
+        name        CDATA #REQUIRED
+>
+
+<!ELEMENT service (access|action)*>
+<!ATTLIST service
+        name        CDATA #REQUIRED
+        http-path   CDATA #REQUIRED
+>
+
+<!ELEMENT access (allow)*>
+<!ATTLIST access
+        override    (true|false) "false"
+>
+
+<!ELEMENT allow EMPTY>
+<!ATTLIST allow
+        type        CDATA #REQUIRED
+>
+
+
+<!ELEMENT action (param|return|access)*>
+<!ATTLIST action
+        name        CDATA #REQUIRED
+        http-method CDATA #REQUIRED
+        http-path   CDATA #REQUIRED
+>
+
+<!ELEMENT param EMPTY>
+<!ATTLIST param
+        default     CDATA #IMPLIED
+        from        (query|body|route|session|cookie|header) "query"
+        name        CDATA #REQUIRED
+        required    (true|false) "false"
+        type        CDATA #REQUIRED
+>
+
+<!ELEMENT return EMPTY>
+<!ATTLIST return
+        array       (true|false) "false"
+        type        CDATA #REQUIRED
+>
+
+<!ELEMENT enum (value)*>
+<!ATTLIST enum
+        name        CDATA #REQUIRED
+>
+
+<!ELEMENT value EMPTY>
+<!ATTLIST value
+        id          CDATA #REQUIRED
+        const       CDATA #REQUIRED
+        name        CDATA #IMPLIED
+>
+
+<!ELEMENT structure (property)*>
+<!ATTLIST structure
+        extends     CDATA #IMPLIED
+        name        CDATA #REQUIRED
+>
+
+<!ELEMENT property (#PCDATA)>
+<!ATTLIST property
+        name        CDATA #REQUIRED
+        type        CDATA #REQUIRED
+        required    CDATA #IMPLIED
+        size        CDATA #IMPLIED
+        default     CDATA #IMPLIED
+>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE serviceconfiguration SYSTEM "services.dtd">
+<serviceconfiguration>
+    <servicecontainer name="Api">
+        <!--
+         Здесь мы определяем, какие сервисы у нас есть, как к ним обращаться и что они возвращают
+         По сути, сервисы - как контроллеры, только всё RESTful.
+         По метаописанию генерятся: 1) интерфейс для PHP, который нужно заимплементить 2) готовый сервис для ангулара
+        -->
+        <service name="Users" http-path="users">
+            <access>
+                <allow type="Admin" />
+            </access>
+
+            <!-- GET /users/list/ -->
+            <action name="getList" http-method="GET" http-path="list">
+                <param name="pagination" type="PaginationStruct" required="false" />
+                <param name="search" type="String" required="false"/>
+                <return type="PaginatedResult<User>"  />
+            </action>
+
+            <!-- GET /users/1/ -->
+            <action name="get" http-method="GET" http-path=":userId">
+                <param name="userId" type="Integer" required="true" />
+                <return type="SourceInfoStruct" />
+            </action>
+
+            <!-- POST /users/ -->
+            <action name="add" http-method="POST" http-path="">
+                <param name="user" type="User" />
+                <return type="Boolean" />
+            </action>
+
+            <!-- POST /users/1 -->
+            <action name="save" http-method="POST" http-path=":userId">
+                <param from="route" name="userId" type="Integer" />
+                <param from="query" name="data" type="SourceEditStruct" />
+                <return type="SourceInfoStruct" />
+            </action>
+
+            <!-- POST /users/1/status -->
+            <action name="setStatus" http-method="POST" http-path=":userId/status">
+                <param name="userId" from="route" type="Integer" />
+                <param name="status" type="UserStatus" />
+                <return type="Boolean" />
+            </action>
+
+            <!-- DELETE /users/1 -->
+            <action name="drop" http-method="DELETE" http-path=":userId">
+                <param name="userId" from="route" type="Integer" />
+                <return type="Boolean" />
+            </action>
+
+        </service>
+
+        <service name="Posts" http-path="posts">
+            <!-- GET /posts/list -->
+            <action name="list" http-method="GET" http-path="list">
+                <return type="PaginatedResult<Post>" />
+            </action>
+
+            <!-- GET /posts/1 -->
+            <action name="view" http-method="GET" http-path=":postId">
+                <param from="route" name="postId" type="Integer" required="true" />
+                <return type="Post" />
+            </action>
+        </service>
+    </servicecontainer>
+
+</serviceconfiguration>

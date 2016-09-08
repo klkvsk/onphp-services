@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE metaconfiguration SYSTEM "meta.dtd">
+<metaconfiguration>
+    <!-- this can be included into some onphp meta xml file -->
+
+    <!-- registering plugin in onphp builder -->
+    <plugin name="serviceconfiguration" class="\OnPhp\Services\OnPhpPlugin" />
+
+
+    <include file="services.xml" />
+    <include file="enums.xml" />
+    <include file="structures.xml" />
+
+</metaconfiguration>

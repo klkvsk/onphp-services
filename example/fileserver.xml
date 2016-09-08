@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE serviceconfiguration SYSTEM "services.dtd">
+<serviceconfiguration>
+
+    <structure name="UploadResult">
+        <property name="fileId" type="String" required="true" />
+    </structure>
+
+    <enum name="FileType">
+        <value id="image" const="IMAGE" />
+        <value id="video" const="VIDEO" />
+        <value id="audio" const="AUDIO" />
+    </enum>
+
+    <enum name="ThumbnailSize">
+        <value id="s" const="SMALL" />
+        <value id="m" const="MEDIUM" />
+        <value id="l" const="LARGE" />
+    </enum>
+
+    <structure name="FileInfo">
+        <property name="fileId" type="String" required="true" />
+        <property name="fileType" type="FileType" required="true" />
+        <property name="image" type="ImageFileInfo" required="false" />
+        <property name="video" type="VideoFileInfo" required="false" />
+        <property name="audio" type="AudioFileInfo" required="false" />
+    </structure>
+
+    <structure name="Image">
+        <property name="format" type="ImageFormat" required="true" />
+        <property name="width" type="Integer" required="true" />
+        <property name="height" type="Integer" required="true" />
+        <property name="url" type="String" required="true" />
+    </structure>
+
+    <structure name="Thumbnail" extends="Image">
+        <property name="size" type="ThumbnailSize" required="true" />
+    </structure>
+
+    <structure name="ImageFileInfo">
+        <property name="original" type="Image" required="true" />
+        <property name="thumbnails" type="Thumbnail[]" />
+    </structure>
+
+    <structure name="VideoPreview">
+        <property name="size" type="ThumbnailSize" required="true" />
+        <property name="frames" type="Image[]" />
+    </structure>
+
+    <structure name="VideoFileInfo">
+        <property name="original" type="Video" required="true" />
+        <property name="previews" type="VideoPreview[]" />
+    </structure>
+
+    <servicecontainer name="FileServer">
+        <generator type="php" out="backend/src/classes/" />
+        <generator type="typescript" out="frontend/src/classes/" />
+
+        <service name="Images" http-path="image">
+            <!-- GET /images/123 -->
+            <action name="getImage" http-method="GET" http-path=":fileId">
+                <param from="route" name="fileId" type="String" required="true" />
+                <return type="String" />
+            </action>
+            <!-- GET /images/123/s -->
+            <action name="getThumbnail" http-method="GET" http-path=":fileId/:size">
+                <param from="route" name="fileId" type="String" required="true" />
+                <param from="route" name="size" type="ThumbnailSize" required="true" />
+                <return type="String" />
+            </action>
+        </service>
+
+        <service name="Videos" http-path="video">
+            <!-- GET /video/123/ -->
+            <action name="getVideo" http-method="GET" http-path=":fileId">
+                <param from="route" name="fileId" type="String" required="true" />
+                <return type="String" />
+            </action>
+            <!-- GET /video/123/s/1 -->
+            <action name="getPreview" http-method="GET" http-path=":fileId/:size/:frame">
+                <param from="route" name="fileId" type="String" required="true" />
+                <param from="route" name="size" type="ThumbnailSize" required="true" />
+                <param from="route" name="frame" type="Integer" required="true" />
+                <return type="String" />
+            </action>
+        </service>
+
+        <service name="Api" http-path="api">
+
+            <!-- POST /api/upload/-->
+            <action name="upload" http-method="POST" http-path="upload">
+                <param from="query" name="file" type="String" required="false" />
+                <return type="UploadResult" />
+            </action>
+
+            <!-- GET /api/info/:fileId -->
+            <action name="getInfo" http-method="GET" http-path="info/:fileId">
+                <param from="route" name="fileId" type="String" required="true" />
+                <return type="FileInfo" />
+            </action>
+
+            <!-- GET /api/delete/:fileId -->
+            <action name="deleteFile" http-method="GET" http-path="delete/:fileId">
+                <param from="route" name="fileId" type="String" required="true" />
+                <return type="void" />
+            </action>
+
+        </service>
+
+    </servicecontainer>
+
+</serviceconfiguration>

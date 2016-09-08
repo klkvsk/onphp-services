@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE serviceconfiguration SYSTEM "services.dtd">
+<serviceconfiguration>
+    <structure name="TypesTestStruct">
+        <!-- simple types -->
+        <property name="bool" type="Boolean" />
+        <property name="int" type="Integer" />
+        <property name="float" type="Float" />
+        <property name="string" type="String" />
+
+        <!-- dates and times -->
+        <property name="date" type="Date" />
+        <property name="timestamp" type="Timestamp" />
+        <!--<property name="time" type="Time" />-->
+
+        <!-- untyped data structures -->
+        <property name="struct" type="TypesTestStruct" />
+    </structure>
+
+    <structure name="ArraysTestStruct">
+        <!-- simple types -->
+        <property name="bool" type="Boolean[]" />
+        <property name="int" type="Integer[]" />
+        <property name="float" type="Float[]" />
+        <property name="string" type="String[]" />
+
+        <!-- dates and times -->
+        <property name="date" type="Date[]" />
+        <property name="timestamp" type="Timestamp[]" />
+        <!--<property name="time" type="Time" />-->
+
+        <!-- untyped data structures -->
+        <property name="struct" type="TypesTestStruct[]" />
+
+    </structure>
+
+</serviceconfiguration>

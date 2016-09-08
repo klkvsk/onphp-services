@@ -1,0 +1,20 @@
+{
+    "name": "onphp/onphp-services",
+    "description": "code generator for web-services communication",
+    "require": {
+        "klkvsk/onphp-framework": "*"
+    },
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "Mikhail Kulakovskiy",
+            "email": "m@klkvsk.ru"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "OnPhp\\Services\\": "src/"
+        }
+    }
+}

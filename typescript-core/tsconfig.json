@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "out": "./lib/onphp-ng-services.js"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

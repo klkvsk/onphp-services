@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE serviceconfiguration SYSTEM "services.dtd">
+<serviceconfiguration>
+    <servicecontainer name="Public">
+
+        <service name="Articles" http-path="articles">
+
+            <!-- GET /articles/list/ -->
+            <action name="getList" http-method="GET" http-path="list">
+                <param name="pagination" type="PaginationStruct" required="false" />
+                <param name="tag" type="String" required="false"/>
+                <param name="search" type="String" required="false"/>
+                <return type="Article[]"  />
+            </action>
+
+            <!-- GET /articles/1/ -->
+            <action name="getArticle" http-method="GET" http-path=":id">
+                <param from="route" name="id" type="Integer" />
+                <return type="Article" />
+            </action>
+
+            <!-- POST /articles/tags/ -->
+            <action name="getTags" http-method="GET" http-path="tags">
+                <return type="Tag[]" />
+            </action>
+
+        </service>
+
+        <service name="Comments" http-path="comments">
+            <action name="getList" http-method="GET" http-path=":articleId">
+                <param from="route" name="articleId" type="Integer" required="true" />
+                <return type="Comment[]" />
+            </action>
+
+            <action name="addComment" http-method="POST" http-path=":articleId">
+                <param from="route" name="articleId" type="Integer" required="true" />
+                <param from="query" name="comment" type="CommentForm" required="true" />
+                <return type="Comment[]" />
+            </action>
+        </service>
+
+    </servicecontainer>
+
+    <servicecontainer name="Admin">
+        <service name="Articles" http-path="articles">
+            <action name="addArticle" http-method="POST" http-path="">
+                <param from="query" name="article" type="ArticleForm" required="true" />
+                <return type="Article" />
+            </action>
+            <action name="deleteArticle" http-method="DELETE" http-path=":articleId">
+                <param from="query" name="articleId" type="Integer" />
+                <return type="Boolean" />
+            </action>
+        </service>
+    </servicecontainer>
+
+</serviceconfiguration>

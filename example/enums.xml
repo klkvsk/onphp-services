@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE serviceconfiguration SYSTEM "services.dtd">
+<serviceconfiguration>
+    <!-- with namespace -->
+    <enum name="MyNamespace.Color">
+        <value id="1" const="RED"   name="красный" />
+        <value id="2" const="GREEN" name="зеленый" />
+        <value id="3" const="BLUE"  name="синий" />
+    </enum>
+
+</serviceconfiguration>
