@@ -48,6 +48,12 @@ class MetaProperty
         return $this->type;
     }
 
+    public function setType(SourceCodeTypeReference $type)
+    {
+        $this->type = $type;
+        return $this;
+    }
+
     /**
      * @return bool
      */

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE serviceconfiguration SYSTEM "services.dtd">
+<serviceconfiguration>
+
+    <structure name="List(T)">
+        <property name="items" type="T[]" />
+        <property name="count" type="Integer" />
+    </structure>
+
+    <structure name="Cat">
+        <property name="name" type="String" />
+    </structure>
+
+    <structure name="Dog">
+        <property name="name" type="String" />
+    </structure>
+
+    <structure name="Holder">
+        <property name="cats" type="List(Cat)" />
+        <property name="dogs" type="List(Dog)" />
+    </structure>
+
+</serviceconfiguration>

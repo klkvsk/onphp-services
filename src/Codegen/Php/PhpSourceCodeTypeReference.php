@@ -32,7 +32,7 @@ class PhpSourceCodeTypeReference extends SourceCodeTypeReference
 
     public function getTypeDoc()
     {
-        $typeDoc = $this->typeName;
+        $typeDoc = $this->getTypeName();
         if (!$this->isScalar()) {
             $typeDoc = PhpSourceCodeClassReference::create($typeDoc)->getFullName();
         } else {
@@ -61,7 +61,7 @@ class PhpSourceCodeTypeReference extends SourceCodeTypeReference
 
     public function getPrimitiveName()
     {
-        \Assert::isNotNull($this->typeId, 'can not get primitiveName for unresolved type ' . $this->typeName);
+        \Assert::isNotNull($this->typeId, 'can not get primitiveName for unresolved type ' . $this->getTypeName());
         \Assert::isIndexExists(self::$primitivesMapping, $this->typeId, 'dont have a primitive for type ' . $this->typeId);
         return self::$primitivesMapping[$this->typeId];
     }
@@ -69,9 +69,9 @@ class PhpSourceCodeTypeReference extends SourceCodeTypeReference
     public function toString()
     {
         if ($this->isScalar()) {
-            return '\'' . strtolower($this->typeName) . '\'';
+            return '\'' . strtolower($this->getTypeName()) . '\'';
         } else {
-            return PhpSourceCodeClassReference::create($this->typeName)->getSelfName();
+            return PhpSourceCodeClassReference::create($this->getTypeName())->getSelfName();
         }
     }
 
@@ -79,5 +79,15 @@ class PhpSourceCodeTypeReference extends SourceCodeTypeReference
     {
         return $this->toString();
     }
+
+    public function getTypeName()
+    {
+        $typeName = parent::getTypeName();
+        foreach ($this->getTemplateTypes() as $templateType) {
+            $typeName .= '_' . $templateType->getTypeName();
+        }
+        return $typeName;
+    }
+
 
 }

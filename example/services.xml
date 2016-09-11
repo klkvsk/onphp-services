@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE serviceconfiguration SYSTEM "services.dtd">
 <serviceconfiguration>
+
+    <structure name="Pagination">
+        <property name="page" type="Integer" required="true" />
+        <property name="limit" type="Integer" required="false" />
+    </structure>
+
+    <structure name="PaginatedResult(T)">
+        <property name="pages" type="Integer" required="true" />
+        <property name="items" type="T[]" />
+    </structure>
+
+    <structure name="User">
+        <property name="id" type="Integer" required="false" />
+    </structure>
+
+    <structure name="Post">
+        <property name="id" type="Integer" required="false" />
+    </structure>
+
+    <enum name="UserStatus">
+        <value id="1" const="ACTIVE" />
+        <value id="2" const="BANNED" />
+    </enum>
+
     <servicecontainer name="Api">
         <!--
          Здесь мы определяем, какие сервисы у нас есть, как к ним обращаться и что они возвращают
@@ -16,13 +40,13 @@
             <action name="getList" http-method="GET" http-path="list">
                 <param name="pagination" type="PaginationStruct" required="false" />
                 <param name="search" type="String" required="false"/>
-                <return type="PaginatedResult<User>"  />
+                <return type="PaginatedResult(User)"  />
             </action>
 
             <!-- GET /users/1/ -->
             <action name="get" http-method="GET" http-path=":userId">
                 <param name="userId" type="Integer" required="true" />
-                <return type="SourceInfoStruct" />
+                <return type="User" />
             </action>
 
             <!-- POST /users/ -->
@@ -34,8 +58,8 @@
             <!-- POST /users/1 -->
             <action name="save" http-method="POST" http-path=":userId">
                 <param from="route" name="userId" type="Integer" />
-                <param from="query" name="data" type="SourceEditStruct" />
-                <return type="SourceInfoStruct" />
+                <param from="query" name="data" type="User" />
+                <return type="User" />
             </action>
 
             <!-- POST /users/1/status -->
@@ -56,7 +80,7 @@
         <service name="Posts" http-path="posts">
             <!-- GET /posts/list -->
             <action name="list" http-method="GET" http-path="list">
-                <return type="PaginatedResult<Post>" />
+                <return type="PaginatedResult(Post)" />
             </action>
 
             <!-- GET /posts/1 -->

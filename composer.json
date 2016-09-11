@@ -1,20 +1,35 @@
 {
-    "name": "onphp/onphp-services",
-    "description": "code generator for web-services communication",
-    "require": {
-        "klkvsk/onphp-framework": "*"
-    },
-    "license": "BSD",
-    "authors": [
-        {
-            "name": "Mikhail Kulakovskiy",
-            "email": "m@klkvsk.ru"
+  "name": "onphp/onphp-services",
+  "description": "code generator for web-services communication",
+  "repositories": [
+    {
+      "type": "package",
+      "package": {
+        "name": "onphp/onphp-framework",
+        "version": "1.0",
+        "source": {
+          "url": "https://github.com/AdOnWeb/onphp-framework.git",
+          "type": "git",
+          "reference": "master"
         }
-    ],
-    "minimum-stability": "dev",
-    "autoload": {
-        "psr-4": {
-            "OnPhp\\Services\\": "src/"
-        }
+      }
     }
+
+  ],
+  "require": {
+    "onphp/onphp-framework": "*"
+  },
+  "license": "BSD",
+  "authors": [
+    {
+      "name": "Mikhail Kulakovskiy",
+      "email": "m@klkvsk.ru"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "OnPhp\\Services\\": "src/"
+    }
+  }
 }

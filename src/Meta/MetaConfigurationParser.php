@@ -77,7 +77,7 @@ class MetaConfigurationParser
 
     public function parseFile($filename)
     {
-        $xml = simplexml_load_file($filename);
+        $xml = \simplexml_load_file($filename);
         $this->parseXmlNode($xml);
 
         return $this;
@@ -233,11 +233,7 @@ class MetaConfigurationParser
 
         foreach ($structureXml->property as $structurePropertyXml) {
             $metaStructure->addProperty(
-                MetaProperty::create(
-                    (string)$structurePropertyXml['name'],
-                    (string)$structurePropertyXml['type'],
-                    (bool)((string)$structurePropertyXml['required'] === 'true')
-                )
+                $this->parseProperty($structurePropertyXml)
             );
         }
 
@@ -272,6 +268,9 @@ class MetaConfigurationParser
     public function finalize()
     {
         foreach ($this->getStructures() as $structure) {
+            if ($structure->isTemplated()) {
+                continue;
+            }
             foreach ($structure->getProperties() as $property) {
                 $property->getType()->resolve($this);
             }

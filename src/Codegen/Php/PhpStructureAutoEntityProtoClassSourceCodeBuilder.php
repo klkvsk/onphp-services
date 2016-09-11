@@ -33,8 +33,6 @@ class PhpStructureAutoEntityProtoClassSourceCodeBuilder extends AbstractPhpSourc
         $s = $this->metaStructure;
         $cref = $this->classRef($s->getClassRef())->addClassNamePrefix('AutoEntityProto');
 
-        $primitiveCref = $this->classRef(\Primitive::class);
-
         if ($cref->getNamespace()) {
             $this->addLine('namespace ' . $cref->getNamespace() . ';');
         }

@@ -12,7 +12,6 @@ class PhpEnumInterfaceSourceCodeBuilder extends AbstractPhpSourceCodeBuilder
 {
     /** @var MetaEnum */
     protected $metaEnum;
-    public static $arrayInConsts = false;
 
     public static function create(MetaEnum $metaEnum)
     {

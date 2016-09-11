@@ -6,10 +6,13 @@
 namespace OnPhp\Services\Codegen;
 
 use \OnPhp\Services\Codegen\Php\PhpSourceCodeGenerator;
+use OnPhp\Services\Meta\Exceptions\MetaConfigurationException;
 use \OnPhp\Services\Meta\MetaConfigurationParser;
 
 class SourceCodeTypeReference
 {
+    const REGEX_TYPENAME    = '[a-zA-Z_](?:[a-zA-Z_0-9\\.\\\\]*[a-zA-Z_0-9])?';
+
     const TYPE_STRING       = 'String';
     const TYPE_BOOLEAN      = 'Boolean';
     const TYPE_FLOAT        = 'Float';
@@ -34,8 +37,31 @@ class SourceCodeTypeReference
     protected $typeId;
     protected $typeName;
     protected $array = false;
+    private   $templateTypes = [];
 
+    public static function parseTypename($typeName)
+    {
+        $reType = self::REGEX_TYPENAME;
+        preg_match("/^({$reType})(?:\\(({$reType}(?:\\[\\])?[, ]?)+\\))?$/", $typeName, $match);
 
+        if (!$match) {
+            throw new \Exception('wrong type format: ' . $typeName);
+        }
+
+        $typeName = $match[1];
+        if (isset($match[2])) {
+            $template = preg_split('/\s*,\s*/', $match[2]);
+        } else {
+            $template = [];
+        }
+
+        return [ $typeName, $template ];
+    }
+    /**
+     * @param string $typeName
+     * @return static
+     * @throws \Exception
+     */
     public static function create($typeName)
     {
         $self = new static;
@@ -44,33 +70,60 @@ class SourceCodeTypeReference
             $typeName = substr($typeName, 0, -2);
             $isArray = true;
         }
+        $self->array = $isArray;
+
+        list ($typeName, $templateTypes) = self::parseTypename($typeName);
 
         $self->typeName = $typeName;
-        $self->array = $isArray;
+        foreach ($templateTypes as $templateType) {
+            $self->templateTypes []= self::create($templateType);
+        }
 
         return $self;
     }
 
+    /**
+     * @param SourceCodeTypeReference $typeRef
+     * @return static
+     */
     public static function wrap(self $typeRef)
     {
         $self = new static;
         $self->typeName = $typeRef->typeName;
         $self->typeId = $typeRef->typeId;
         $self->array = $typeRef->array;
+        $self->templateTypes = $typeRef->templateTypes;
 
         return $self;
     }
 
+    /**
+     * @return string
+     */
     public function getTypeName()
     {
         return $this->typeName;
     }
 
+    /**
+     * @return bool
+     */
     public function isArray()
     {
         return $this->array;
     }
 
+    /**
+     * @return static[]
+     */
+    public function getTemplateTypes()
+    {
+        return $this->templateTypes;
+    }
+
+    /**
+     * @param MetaConfigurationParser $metaConfig
+     */
     final public function resolve(MetaConfigurationParser $metaConfig)
     {
         if (in_array($this->typeName, self::$internalTypes)) {
@@ -99,13 +152,22 @@ class SourceCodeTypeReference
             }
         }
 
-        if ($metaConfig->getEnumByName($this->typeName)) {
+        $metaEnum = $metaConfig->getEnumByName($this->typeName);
+        if ($metaEnum) {
             $this->typeId = PhpSourceCodeGenerator::$enumerationDefaultType;
             return;
         }
 
-        if ($metaConfig->getStructureByName($this->typeName)) {
+        $metaStructure = $metaConfig->getStructureByName($this->typeName);
+        if ($metaStructure) {
             $this->typeId = self::TYPE_STRUCTURE;
+            if ($this->getTemplateTypes()) {
+                \Assert::isTrue($metaStructure->isTemplated(), 'trying to use template on non-templated structure');
+                $case = $metaStructure->addTemplateCase($this->getTemplateTypes());
+                foreach ($case->getProperties() as $metaProperty) {
+                    $metaProperty->getType()->resolve($metaConfig);
+                }
+            }
             return;
         }
 

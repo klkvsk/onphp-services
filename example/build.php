@@ -8,9 +8,10 @@ ini_set('display_errors', 'On');
 
 $parser = new \OnPhp\Services\Meta\MetaConfigurationParser;
 $parser
-    ->parseFile(dirname(__FILE__) . '/services.xml')
-    ->parseFile(dirname(__FILE__) . '/enums.xml')
-    ->parseFile(dirname(__FILE__) . '/structures.xml')
+//    ->parseFile(dirname(__FILE__) . '/services.xml')
+//    ->parseFile(dirname(__FILE__) . '/enums.xml')
+//    ->parseFile(dirname(__FILE__) . '/structures.xml')
+    ->parseFile(dirname(__FILE__) . '/templates.xml')
     ->finalize()
     ->selfCheck();
 
@@ -39,12 +40,24 @@ foreach ($parser->getEnums() as $enum) {
         echo ' - ' . $file . ': ' . ($isUpdated ? 'UPDATED' : 'OK') . PHP_EOL;
     }
 }
-foreach ($parser->getStructures() as $structure) {
+
+$buildStructure = function (\OnPhp\Services\Meta\MetaStructure $structure) use ($phpGen, &$buildStructure) {
+    if ($structure->isTemplated()) {
+        echo 'Template for ' . $structure->getName() . PHP_EOL;
+        foreach ($structure->getTemplateCases() as $case) {
+            $buildStructure($case);
+        }
+        return;
+    }
     echo 'Building ' . $structure->getName() . PHP_EOL;
     $generated = $phpGen->buildStructure($structure);
     foreach ($generated as $file => $isUpdated) {
         echo ' - ' . $file . ': ' . ($isUpdated ? 'UPDATED' : 'OK') . PHP_EOL;
     }
+};
+
+foreach ($parser->getStructures() as $structure) {
+    $buildStructure($structure);
 }
 
 echo "done!\n";
