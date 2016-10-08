@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "module": "commonjs",
     "target": "es5",
     "sourceMap": true,
-    "out": "./lib/onphp-ng-services.js"
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"

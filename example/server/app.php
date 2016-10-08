@@ -1,7 +1,7 @@
 <?php
 require dirname(__FILE__) . '/../config.php';
 
-define('PATH_SRC', realpath(dirname(__FILE__). '/../') );
+define('PATH_SRC', realpath(dirname(__FILE__). '/src') );
 set_include_path(get_include_path()
     // base and abstract classes of this app
     . PATH_SEPARATOR . PATH_SRC . '/app/'

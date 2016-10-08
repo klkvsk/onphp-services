@@ -8,6 +8,27 @@ namespace OnPhp\Services\Codegen\Typescript;
 
 class TypescriptSourceCodeGenerator implements \OnPhp\Services\Codegen\ISourceCodeGenerator
 {
+    /** @var $string */
+    protected $path;
+
+    /**
+     * @param string $path
+     * @return $this
+     */
+    public function setPath($path)
+    {
+        $this->path = $path;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
 
     public function buildContainer(\OnPhp\Services\Meta\MetaServiceContainer $container)
     {

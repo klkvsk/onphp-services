@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "rootDirs": [
+      "../.."
+    ],
+    "module": "amd",
+    "outFile": "all.js"
+  }
+}
