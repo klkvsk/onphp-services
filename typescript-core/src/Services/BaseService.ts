@@ -2,7 +2,7 @@ import {Form} from "../Forms/Form";
 import {IServiceConnector} from "./IServiceConnector";
 import {ServiceAction} from "./ServiceAction";
 import {ServiceActionParams} from "./ServiceActionParams";
-import {Dictionary} from "../Common";
+import {Dictionary} from "../Common/Dictionary";
 import {PrimitiveBoolean} from "../Primitives/PrimitiveBoolean";
 import {PrimitiveInteger} from "../Primitives/PrimitiveInteger";
 import {ServiceActionReturn} from "./ServiceActionReturn";

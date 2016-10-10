@@ -1,4 +1,4 @@
-import {Dictionary} from "../Common";
+import {Dictionary} from "../Common/Dictionary";
 import {PrimitiveImportError} from "../Primitives/PrimitiveImportError";
 
 export class FormValidationError extends Error {

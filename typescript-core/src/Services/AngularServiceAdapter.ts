@@ -1,7 +1,7 @@
 import {URLSearchParams, Http, Headers, Request, Response} from "@angular/http"
 import {IServiceConnector, IServiceConnectorResponse} from "./IServiceConnector";
 import {IServiceConnectorRequest} from "./IServiceConnector";
-import {Dictionary} from "../Common";
+import {Dictionary} from "../Common/Dictionary";
 
 import {Observable} from 'rxjs/Rx'
 

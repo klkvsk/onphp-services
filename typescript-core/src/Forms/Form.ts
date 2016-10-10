@@ -1,4 +1,4 @@
-import {Dictionary} from "../Common";
+import {Dictionary} from "../Common/Dictionary";
 import {Primitive} from "../Primitives/Primitive";
 import {PrimitiveImportError} from "../Primitives/PrimitiveImportError";
 import {PrimitiveString} from "../Primitives/PrimitiveString";

@@ -1,4 +1,4 @@
-import {Dictionary} from "../Common";
+import {Dictionary} from "../Common/Dictionary";
 
 export interface IServiceConnectorRequest {
     httpMethod: string,

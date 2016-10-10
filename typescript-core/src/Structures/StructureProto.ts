@@ -1,4 +1,4 @@
-import {Dictionary} from '../Common';
+import {Dictionary} from '../Common/Dictionary';
 import {Form} from "../Forms/Form";
 import {BaseStructure} from "./BaseStructure";
 

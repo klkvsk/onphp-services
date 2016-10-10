@@ -1,6 +1,6 @@
 import {Form} from "../Forms/Form";
 import {Primitive} from "../Primitives/Primitive";
-import {Dictionary} from "../Common";
+import {Dictionary} from "../Common/Dictionary";
 import {IServiceConnector, IServiceConnectorRequest, IServiceConnectorResponse} from "./IServiceConnector";
 import {ServiceActionParams} from "./ServiceActionParams";
 import {ServiceActionReturn} from "./ServiceActionReturn";
