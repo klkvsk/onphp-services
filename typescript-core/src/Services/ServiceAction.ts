@@ -4,7 +4,7 @@ import {Dictionary} from "../Common/Dictionary";
 import {IServiceConnector, IServiceConnectorRequest, IServiceConnectorResponse} from "./IServiceConnector";
 import {ServiceActionParams} from "./ServiceActionParams";
 import {ServiceActionReturn} from "./ServiceActionReturn";
-import {FormValidationError} from "../Forms/FormValidationError";
+import {FormValidationException} from "../Forms/FormValidationException";
 
 export class ServiceAction {
     constructor(
@@ -29,13 +29,13 @@ export class ServiceAction {
         }
 
         if (Object.keys(errors).length > 0) {
-            throw new FormValidationError(errors);
+            throw new FormValidationException(errors);
         }
 
         // put route parameters into :placeholders
         var httpPath = this.httpPath.replace(
             /:([a-z][a-z0-9_]+)/ig,
-            function (_: string, placeholderName: string) : string {
+            (_: string, placeholderName: string) : string => {
                 if (!this.params.route) {
                     return '';
                 }
@@ -47,8 +47,8 @@ export class ServiceAction {
         let request = <IServiceConnectorRequest> {
             httpMethod: this.httpMethod,
             httpPath: httpPath,
-            query: this.params.query.exportData(),
-            body:  this.params.body.exportData()
+            query: this.params.query ? this.params.query.exportData() : null,
+            body:  this.params.body  ? this.params.body.exportData() : null,
         };
 
         return connector.doRequest(request);

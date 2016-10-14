@@ -15,11 +15,14 @@
     "@angular/platform-browser": "^2.0.0",
     "@angular/platform-browser-dynamic": "^2.0.0",
     "@angular/router": "^3.0.0",
+    "axios": "^0.15.0",
     "rxjs": "^5.0.0-beta.12",
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
-    "typescript": "^1.8.10",
+    "@types/core-js": "^0.9.34",
+    "core-js": "^2.4.1",
+    "typescript": "^1.8.10"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

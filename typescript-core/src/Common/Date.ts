@@ -1,5 +1,6 @@
 import {Dictionary} from "./Dictionary";
 import {JsonSerializable} from "./JsonSerializable";
+import {WrongArgumentException} from "./Exceptions";
 
 export enum WeekDay {
     MONDAY 	    = 1,
@@ -49,7 +50,7 @@ export class DateOnly implements JsonSerializable {
             this.d = new Date(dateStr);
 
             if (this.toString() != dateStr) {
-                throw new Error('strange input given - ' + date);
+                throw new WrongArgumentException('strange input given - ' + date);
             }
 
         } else if (typeof date === 'number') {
@@ -59,7 +60,7 @@ export class DateOnly implements JsonSerializable {
             this.d = date;
 
         } else {
-            throw new Error('strange input type given - ' + typeof date);
+            throw new WrongArgumentException('strange input type given - ' + typeof date);
         }
     }
 

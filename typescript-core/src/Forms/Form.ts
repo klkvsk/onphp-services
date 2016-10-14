@@ -1,7 +1,8 @@
 import {Dictionary} from "../Common/Dictionary";
 import {Primitive} from "../Primitives/Primitive";
-import {PrimitiveImportError} from "../Primitives/PrimitiveImportError";
 import {PrimitiveString} from "../Primitives/PrimitiveString";
+import {PrimitiveImportError} from "../Primitives/PrimitiveImportError";
+import {ObjectNotFoundException} from "../Common/Exceptions";
 
 export class PrimitiveFactory {
     test() {
@@ -10,7 +11,7 @@ export class PrimitiveFactory {
 }
 
 export class Form {
-    protected primitives: Dictionary<Primitive<any>>;
+    protected primitives: Dictionary<Primitive<any>> = {};
 
     constructor(primitives?: Dictionary<Primitive<any>>) {
         if (primitives) {
@@ -18,6 +19,18 @@ export class Form {
                 this.add(name, primitives[name]);
             }
         }
+    }
+
+    public getPrimitives() : Dictionary<Primitive<any>> {
+        return this.primitives;
+    }
+
+    public getPrimitiveNames() : string[] {
+        let names: string[] = [];
+        for (let name in this.primitives) {
+            names.push(name);
+        }
+        return names;
     }
 
     public add(name: string, primitive: Primitive<any>) : Form {
@@ -57,7 +70,11 @@ export class Form {
     }
 
     public getValue(name: string) {
-        return this.primitives[name].getValue();
+        if (this.primitives.hasOwnProperty(name)) {
+            return this.primitives[name].getValue();
+        } else {
+            throw new ObjectNotFoundException('form has no primitive "' + name + '"')
+        }
     }
 
     public exportData() : Dictionary<any> {

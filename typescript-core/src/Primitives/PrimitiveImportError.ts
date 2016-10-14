@@ -3,4 +3,3 @@ export enum PrimitiveImportError {
     MISSING = 2,
 }
 
-var b = PrimitiveImportError.MISSING;

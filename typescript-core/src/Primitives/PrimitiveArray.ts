@@ -1,7 +1,8 @@
 import {Primitive} from "./Primitive";
 import {PrimitiveImportError} from "./PrimitiveImportError";
 
-export class PrimitiveArray<T> extends Primitive<Array<T>> {
+export class PrimitiveArray<T> extends Primitive<T[]> {
+
     protected primitive:Primitive<T>;
     protected subErrors:PrimitiveImportError[];
 

@@ -1,7 +1,8 @@
 import {Dictionary} from "../Common/Dictionary";
 import {PrimitiveImportError} from "../Primitives/PrimitiveImportError";
+import {Exception} from "../Common/Exceptions";
 
-export class FormValidationError extends Error {
+export class FormValidationException extends Exception {
 
     constructor(public errors: Dictionary<PrimitiveImportError>) {
         super();

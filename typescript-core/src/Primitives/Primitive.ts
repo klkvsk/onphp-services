@@ -36,11 +36,4 @@ export abstract class Primitive<T> {
         }
         return true;
     }
-
-    public arrayOf() : PrimitiveArray<T> {
-        let arrayPrm = new PrimitiveArray<T>();
-        arrayPrm.setPrimitive(this);
-        arrayPrm.setRequired(this.required);
-        return arrayPrm;
-    }
 }
