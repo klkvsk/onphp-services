@@ -1,6 +1,7 @@
 import {Dictionary} from '../Common/Dictionary';
 import {Form} from "../Forms/Form";
 import {BaseStructure} from "./BaseStructure";
+import {FormValidationException} from "../Forms/FormValidationException";
 
 export interface StructureConstructor<T extends BaseStructure> {
     new() : T
@@ -28,11 +29,12 @@ export abstract class StructureProto {
 
     public fill(object: BaseStructure, data: Dictionary<any>) {
         let form = this.getForm();
-        form.importData(data);
+        if (!form.importData(data)) {
+            throw new FormValidationException(form.getErrors());
+        }
         for (let name in form.exportData()) {
             object[name] = form.getValue(name);
         }
-        return this;
     }
 
 }

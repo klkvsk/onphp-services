@@ -5,6 +5,8 @@ import {IServiceConnector, IServiceConnectorRequest, IServiceConnectorResponse} 
 import {ServiceActionParams} from "./ServiceActionParams";
 import {ServiceActionReturn} from "./ServiceActionReturn";
 import {FormValidationException} from "../Forms/FormValidationException";
+import {Exception} from "../Common/Exceptions";
+import {PrimitiveImportError} from "../Primitives/PrimitiveImportError";
 
 export class ServiceAction {
     constructor(
@@ -14,7 +16,7 @@ export class ServiceAction {
         protected returns:      ServiceActionReturn
     ) {}
 
-    call(connector: IServiceConnector, params: Dictionary<any>) : Promise<IServiceConnectorResponse> {
+    call(connector: IServiceConnector, params: Dictionary<any>) : Promise<any> {
         var errors = {};
         for (let p of [ this.params.route, this.params.query, this.params.body ]) {
             if (!p) {
@@ -51,6 +53,13 @@ export class ServiceAction {
             body:  this.params.body  ? this.params.body.exportData() : null,
         };
 
-        return connector.doRequest(request);
+        return connector.doRequest(request)
+            .then((response) => {
+                if (this.returns.primitive.importValue(response.body)) {
+                    return this.returns.primitive.getValue();
+                } else {
+                    throw new Exception(PrimitiveImportError[this.returns.primitive.getError()])
+                }
+            });
     }
 }

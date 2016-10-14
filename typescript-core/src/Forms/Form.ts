@@ -51,7 +51,8 @@ export class Form {
         var result: boolean = true;
         for (let name in this.primitives) {
             if (data.hasOwnProperty(name)) {
-                result = result && this.primitives[name].importValue(data[name])
+                let importResult = this.primitives[name].importValue(data[name]);
+                result = result && importResult;
             }
         }
 
@@ -59,7 +60,7 @@ export class Form {
     }
 
     public getErrors() : Dictionary<PrimitiveImportError> {
-        var errors: Dictionary<PrimitiveImportError> = {};
+        let errors: Dictionary<PrimitiveImportError> = {};
         for (let name in this.primitives) {
             if (this.primitives[name].getError()) {
                 errors[name] = this.primitives[name].getError();

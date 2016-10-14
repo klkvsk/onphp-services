@@ -2,12 +2,10 @@ var webpack = require('webpack');
 var fs = require('fs');
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: './src/app.ts',
 
     output: {
-        filename: "./dist/onphp.bundle.js",
-        library: "onphp",
-        libraryTarget: "var"
+        filename: "./dist/app.js"
     },
 
     //devtool: "source-map",
@@ -26,7 +24,4 @@ module.exports = {
     //    new webpack.optimize.UglifyJsPlugin()
     ],
 
-    externals: {
-        "@angular/http": "ng.http",
-    }
 };

@@ -33,6 +33,8 @@ export class PrimitiveArray<T> extends Primitive<T[]> {
             }
             this.value[i] = value;
         }
+
+        return this.checkImportResult();
     }
 
 

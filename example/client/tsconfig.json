@@ -1,18 +1,16 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
-    "rootDirs": [
-      "../.."
-    ],
-    "target": "es5",
-    "module": "system",
-    "outFile": "all.js",
     "typeRoots": [
       "../node_modules/@types"
     ],
     "types": [
-      "core-js"
-    ]
+      "core-js", "es6-promise"
+    ],
+
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "experimentalDecorators": true
   },
   "exclude": [
     "node_modules"

@@ -1,25 +1,22 @@
 import {Primitive} from "./Primitive";
 import {PrimitiveImportError} from "./PrimitiveImportError";
 import {BaseStructure} from "../Structures/BaseStructure";
-
-export interface IStructureConstructor<TStructure extends BaseStructure> {
-    new(data:any) : TStructure
-}
+import {StructureProto} from "../Structures/StructureProto";
 
 export class PrimitiveStructure<TStructure extends BaseStructure> extends Primitive<Object> {
-    protected ctor: IStructureConstructor<TStructure>;
+    protected proto: StructureProto;
 
-    public setConstructor(ctor: IStructureConstructor<TStructure>) {
-        this.ctor = ctor;
+    public setProto(proto: StructureProto) {
+        this.proto = proto;
         return this;
     }
 
-    public getConstructuror() {
-        return this.ctor;
+    public getProto() {
+        return this.proto;
     }
 
     public importValue(data:any): boolean {
-        this.value = new this.ctor(data);
+        this.value = this.proto.make(data);
         return this.checkImportResult();
     }
 
@@ -27,7 +24,7 @@ export class PrimitiveStructure<TStructure extends BaseStructure> extends Primit
         if (!super.checkImportResult()) {
             return false;
         }
-        if (this.value && !(this.value instanceof this.ctor)) {
+        if (this.value && !(this.value instanceof this.proto.getConstructor())) {
             this.error = PrimitiveImportError.WRONG;
             return false;
         }
